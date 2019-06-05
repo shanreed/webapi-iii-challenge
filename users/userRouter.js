@@ -1,4 +1,5 @@
 const express = 'express';
+const userDb = require('./userDb');
 
 const router = express.Router();
 
@@ -33,8 +34,21 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-
-};
+    const userId = req.params;
+    userDb.getById(userId)
+      .then(user => {
+        if (user) {
+          req.user = user;
+          next();
+        } else {
+          res.status(400).json({ message: "invalid user id" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  
 
 function validateUser(req, res, next) {
 
