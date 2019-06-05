@@ -48,10 +48,16 @@ function validateUserId(req, res, next) {
         console.log(err);
       });
   }
-  
+
 
 function validateUser(req, res, next) {
-
+    if (req.body && Object.keys(req.body).length > 0) {
+        next();
+        } else if (req.name && Object.keys(req.name).length > 0){
+        res.status(400).json({ message: "missing user data" });
+        } else {
+        res.status(400).json({ message: "missing required name field"});
+        }
 };
 
 function validatePost(req, res, next) {
