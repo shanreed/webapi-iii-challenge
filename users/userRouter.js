@@ -54,13 +54,20 @@ function validateUser(req, res, next) {
     if (req.body && Object.keys(req.body).length > 0) {
         next();
         } else if (req.name && Object.keys(req.name).length > 0){
-        res.status(400).json({ message: "missing user data" });
+        next();
         } else {
-        res.status(400).json({ message: "missing required name field"});
+        res.status(400).json({ message: "missing required name field"},{ message: "missing user data" });
         }
 };
 
 function validatePost(req, res, next) {
+    if (req.body && Object.keys(req.body).length > 0) {
+        next();
+        } else if (req.text && Object.keys(req.text).length > 0) {
+            next();
+        } else {
+        res.status(400).json({ message: "missing post data"}, { message: "missing required text field" });
+      }
 
 };
 
