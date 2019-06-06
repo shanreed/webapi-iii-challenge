@@ -49,8 +49,18 @@ router.get('/:id/posts', async (req, res) => {
 
 });
 
-router.delete('/:id', (req, res) => {
-
+router.delete('/:id', async (req, res) => {
+  try {
+    const count = await userDb.remove(req.params.id);
+      if (count > 0) {
+        res.status(200).json({message: 'User has been Deleted'})
+        } else {
+        res.status(404).json({ message: 'No user can be found'})
+        }
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({message: 'Error deleting user'})
+  }
 });
 
 router.put('/:id', (req, res) => {
