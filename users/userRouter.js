@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-//Get users by id working
+//Get users by id 
 router.get('/:id', validateUserId, async (req, res) => {
  try {
    const user = await userDb.getById(req.params.id);
@@ -37,7 +37,15 @@ router.get('/:id', validateUserId, async (req, res) => {
  }
 });
 
-router.get('/:id/posts', (req, res) => {
+//Get Post By Id
+router.get('/:id/posts', async (req, res) => {
+  try {
+    const post = await userDb.getUserPosts(req.params.id);
+    res.status(200).json(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({message: 'Error getting post'})
+  }
 
 });
 
