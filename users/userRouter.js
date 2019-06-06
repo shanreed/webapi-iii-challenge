@@ -1,5 +1,6 @@
 const express = require ('express');
 const userDb = require('./userDb');
+const postDb = require('../posts/postDb');
 
 const router = require('express').Router();
 
@@ -21,8 +22,19 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
-
+//Get users by id working
+router.get('/:id', validateUserId, async (req, res) => {
+ try {
+   const user = await userDb.getById(req.params.id);
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({message: "User id not found"})
+      }
+ }  catch(err) {
+    console.log(err);
+    res.status(500).json({meaasge: 'Error getting id'})
+ }
 });
 
 router.get('/:id/posts', (req, res) => {
