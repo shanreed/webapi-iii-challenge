@@ -1,10 +1,10 @@
 const express = require('express');
 const helmet = require('helmet');
 const logger = require('morgan');
-
+const cors = require('cors');
 
 const postsRouter = require('./posts/postRouter');
-const userRouter = require('./users/userRouter')
+const usersRouter = require('./users/userRouter');
 
 const server = express();
 
@@ -12,10 +12,12 @@ const server = express();
 server.use(express.json());
 server.use(helmet());
 server.use(logger('dev'));
+server.use(cors());
 server.use(customLogger);
 
 
 server.use('/api/post', postsRouter);
+server.use('/api/users', usersRouter);
 
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`)
@@ -24,7 +26,7 @@ server.get('/', (req, res) => {
 //custom middleware
 
 function customLogger(req, res, next) {
- console.log(`${req.method}, ${req.url}, ${new Date().toISOString()} `)
+ console.log(`Method ${req.method}, Url ${req.url}, Date ${new Date().toISOString()} `)
  next();
 };
 
