@@ -6,11 +6,20 @@ const router = require('express').Router();
 
 //Post user
 router.post('/', async (req, res) => {
+    try {
+      const user = await userDb.insert(req.body);
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error adding user" });
+    }
+
 });
 
 router.post('/:id/posts', (req, res) => {
 
 });
+
 //Get Users
 router.get('/', async (req, res) => {
     try {

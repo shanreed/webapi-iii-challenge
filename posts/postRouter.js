@@ -42,7 +42,20 @@ router.delete('/:id', async (req, res) => {
 
 }); 
 
-router.put('/:id', (req, res) => {
+
+//PUT
+router.put('/:id', async (req, res) => {
+  try {
+    const post = await postDb.update(req.params.id);
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(404).json({message: 'No such post found'});
+      }
+} catch(err) {
+  console.log(error);
+  res.status(500).json({message: 'Error updating post'});
+}
 
 });
 
