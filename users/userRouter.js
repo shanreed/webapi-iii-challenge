@@ -38,7 +38,7 @@ router.get('/:id', validateUserId, async (req, res) => {
 });
 
 //Get Post By Id
-router.get('/:id/posts', async (req, res) => {
+router.get('/:id/posts', validateUserId, async (req, res) => {
   try {
     const post = await userDb.getUserPosts(req.params.id);
     res.status(200).json(post);
@@ -49,7 +49,8 @@ router.get('/:id/posts', async (req, res) => {
 
 });
 
-router.delete('/:id', async (req, res) => {
+//DELETE
+router.delete('/:id', validateUserId, async (req, res) => {
   try {
     const count = await userDb.remove(req.params.id);
       if (count > 0) {
@@ -63,7 +64,18 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, async (req, res) => {
+  try {
+      const user = await userDb.update(req.params.id);
+        if (user) {
+          res.status(200).json(user);
+        } else {
+          res.status(404).json({message: 'No such user found'});
+        }
+  } catch(err) {
+    console.log(error);
+    res.status(500).json({message: 'Error updating user'});
+  }
 
 });
 

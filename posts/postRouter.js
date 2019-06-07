@@ -1,7 +1,7 @@
 const express = require('express');
 
-const Posts = require('./postDb');
-const Users = require('../users/userDb');
+const postDb = require('./postDb');
+const userDb = require('../users/userDb');
 
 const router = express.Router();
 
@@ -11,7 +11,14 @@ router.use((req, res, next) => {
 });
 
 
-router.get('/', (req, res) => {
+router.get('/', async(req, res) => {
+  try {
+      const posts = await postDb.get(req.query);
+        res.status(200).json(posts);
+      } catch (err) {
+          console.log(err);
+        res.status(500).json({ message: "Error getting posts" });
+  }
 
 });
 
