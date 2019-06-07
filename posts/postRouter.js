@@ -10,7 +10,7 @@ router.use((req, res, next) => {
   next();
 });
 
-
+//GET 
 router.get('/', async(req, res) => {
   try {
       const posts = await postDb.get(req.query);
@@ -26,9 +26,21 @@ router.get('/:id', (req, res) => {
 
 });
 
-router.delete('/:id', (req, res) => {
+//DELETE 
+router.delete('/:id', async (req, res) => {
+  try {
+    const count = await postDb.remove(req.params.id);
+    if (count > 0) {
+      res.status(200).json({ message: "Deleted" });
+      } else {
+      res.status(404).json({ message: "No post can be found" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error deleting post" });
+  }
 
-});
+}); 
 
 router.put('/:id', (req, res) => {
 

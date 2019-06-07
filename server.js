@@ -16,7 +16,7 @@ server.use(cors());
 server.use(customLogger);
 
 
-server.use('/api/post', postsRouter);
+server.use('/api/posts', postsRouter);
 server.use('/api/users', usersRouter);
 
 server.get('/', (req, res) => {
